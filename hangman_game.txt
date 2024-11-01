@@ -1,0 +1,110 @@
+import java.util.*;
+class ins{
+   static void entry_exit(){
+       System.out.println();
+       System.out.print("Enter 1 to start game / 0 to exit game: ");
+    }
+}
+public class hangman_game {
+    public static void main(String[] args) {
+       Scanner sc=new Scanner (System.in);
+        System.out.print("Enter your username: ");
+        String name=sc.nextLine();
+        System.out.println("HELLO "+name+ ", WELCOME TO THE HANGMAN GAME");
+        final String[] words={"coding", "programming", "java" , "python", "javascript","hangman", "games", "competition" };
+
+        int level=1;
+        int chance=6;
+        char letter;
+        String l;
+
+        ins.entry_exit();
+        int choice=sc.nextInt();
+        if(choice==1){
+            for(int i=1;i<=5;i++){
+                System.out.println();
+                System.out.print("Enter 1 to start level "+ level+" / 0 to exit game: ");
+                choice=sc.nextInt();
+                if(choice==1) {
+                    Random rand = new Random();
+                    int compguess = rand.nextInt(words.length);
+                    String word = words[compguess];
+                    System.out.println("Start of level " + level);
+                    System.out.println();
+                    int hint = word.length();
+                    System.out.println("Hint: THE WORD IS A " + hint + " letter word");
+                    StringBuilder userguess = new StringBuilder("_".repeat(word.length()));
+                    while ((chance >= 0) || (userguess.toString().contains("_"))) {
+                        if (userguess.toString().equals(word)) {
+                            System.out.println("You have guessed the word");
+                            break;
+                        }
+                        if (chance == 0) {
+                            if (userguess.toString().contains("_")) {
+                                System.out.println("You couldn't make up the word");
+                                System.out.println("The word is " + word);
+                                level--;
+                                i = 5;
+                                break;
+                            }
+                        }
+                        System.out.println(userguess);
+                        System.out.print("Enter your letter: ");
+                        letter = sc.next().toLowerCase().charAt(0);
+                        l = Character.toString(letter);
+                        Set<Character> guessedLetters = new HashSet<>();
+
+
+                        if (guessedLetters.contains(letter)) {
+                            System.out.println("You have already guessed the letter");
+                        } else {
+                            if (word.contains(l)) {
+                                System.out.println("You have guessed the correct letter");
+                                for (int j = 0; j < word.length(); j++) {
+                                    if (word.toLowerCase().charAt(j) == Character.toLowerCase(letter)) {
+                                        if (word.contains(l)) {
+                                            userguess.setCharAt(j, letter);
+                                        }
+                                    }
+                                }
+
+                                System.out.println("Your Guess: " + userguess);
+                                System.out.println("Chances: " + chance);
+                            } else {
+                                System.out.println("Sorry, it is not the correct letter");
+
+                                System.out.println("Chances: " + chance);
+                                chance = chance - 1;
+                            }
+                        }
+                        guessedLetters.add(letter);
+
+                    }
+                    if (level == 5) {
+                        System.out.println("Congratulations " + name + " ! you have completed all te levels of the Hangman Game");
+                        System.out.println("You have reached the end of the game ");
+                        break;
+                    } else {
+                        level++;
+                        System.out.println("Congratulations! you have qualified to level " + level);
+                    }
+                }else if(choice==0){
+                    System.out.println("Game exited");
+                    break;
+                }else{
+                    System.out.println("No such choice");
+                    System.out.println("Game exited ");
+                    break;
+                }
+
+            }
+        }else if(choice==0){
+            System.out.println("Game exited");
+        }else {
+            System.out.println("No such choice");
+            System.out.println("Game exited");
+        }
+
+
+    }
+}
